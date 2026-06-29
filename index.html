@@ -142,7 +142,7 @@ a{text-decoration:none;color:inherit;}
 .nav-divider{width:1px;height:20px;background:var(--border);flex-shrink:0;margin:0 .25rem;}
 
 .nav-search{
-  flex:1;max-width:380px;position:relative;
+  flex:1;max-width:280px;position:relative;
 }
 .nav-search i{
   position:absolute;left:11px;top:50%;transform:translateY(-50%);
@@ -159,7 +159,7 @@ a{text-decoration:none;color:inherit;}
 .nav-search input::placeholder{color:var(--ink-4);}
 .nav-search input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,99,210,0.12);}
 
-.nav-actions{margin-left:auto;display:flex;align-items:center;gap:4px;}
+.nav-actions{margin-left:auto;display:flex;align-items:center;gap:8px;}
 
 .icon-btn{
   width:36px;height:36px;border-radius:var(--radius-sm);
@@ -187,6 +187,28 @@ a{text-decoration:none;color:inherit;}
 }
 .user-label{font-size:12.5px;font-weight:600;color:var(--ink-1);}
 .user-pill i{font-size:13px;color:var(--ink-3);}
+
+.signout-btn{
+  display:flex;align-items:center;gap:6px;
+  padding:6px 12px;
+  background:var(--surface-2);
+  border:1px solid var(--border-md);
+  border-radius:var(--radius-sm);
+  font-family:var(--ff-body);font-size:12.5px;font-weight:600;
+  color:var(--ink-2);cursor:pointer;
+  transition:background .12s,border-color .12s,color .12s;
+  white-space:nowrap;flex-shrink:0;
+}
+.signout-btn:hover{
+  background:#fff1f1;border-color:#fca5a5;color:#dc2626;
+}
+[data-theme="dark"] .signout-btn{
+  background:var(--surface-3);border-color:var(--border-md);
+}
+[data-theme="dark"] .signout-btn:hover{
+  background:rgba(220,38,38,0.12);border-color:rgba(220,38,38,0.35);color:#f87171;
+}
+.signout-btn i{font-size:14px;}
 
 /* ─── WELCOME BANNER ─────────────────────────────────── */
 #welcomeBanner{
@@ -726,8 +748,10 @@ a{text-decoration:none;color:inherit;}
     <div class="user-pill">
       <div class="user-avatar">PU</div>
       <span class="user-label">Paul</span>
-      <i class="ti ti-chevron-down"></i>
     </div>
+    <button class="signout-btn" onclick="signOut()" title="Sign out" aria-label="Sign out">
+      <i class="ti ti-logout"></i> Sign out
+    </button>
   </div>
 </nav>
 
@@ -750,8 +774,7 @@ a{text-decoration:none;color:inherit;}
 <div class="hero">
   <div class="hero-top">
     <div>
-      <div class="hero-greeting">Welcome back, <em>Paul</em> 👋</div>
-      <div class="hero-sub">Your team workspace is ready. 16 tools available across 3 categories.</div>
+      <div class="hero-sub" style="margin-top:0;">Your team workspace is ready — 16 tools across 3 categories.</div>
     </div>
     <div class="hero-meta">
       <div class="live-chip"><span class="pulse"></span>All systems live</div>
