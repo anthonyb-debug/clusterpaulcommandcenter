@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cluster Paul — Command Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+<style>
+/* ─── RESET ─────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:15px;scroll-behavior:smooth;}
+
+/* ─── TOKENS ─────────────────────────────────────────── */
+:root{
+  --ff-display:'Plus Jakarta Sans',system-ui,sans-serif;
+  --ff-body:'Inter',system-ui,sans-serif;
+
+  --bg:          #F4F6FA;
+  --surface:     #FFFFFF;
+  --surface-2:   #F0F2F8;
+  --surface-3:   #E8EBF4;
+  --border:      #E2E5EF;
+  --border-md:   #CDD1E0;
+
+  --ink-1:       #0D1023;
+  --ink-2:       #3E4462;
+  --ink-3:       #7A80A0;
+  --ink-4:       #A8AEBF;
+
+  --accent:      #4F63D2;
+  --accent-bg:   #EEF0FB;
+  --accent-dark: #3A4FAD;
+
+  --green:       #16A34A;
+  --green-bg:    #EDFBF2;
+  --green-border:#BBF7D0;
+
+  --blue:        #0284C7;
+  --blue-bg:     #EFF8FF;
+  --blue-border: #BAE6FD;
+
+  --purple:      #7C3AED;
+  --purple-bg:   #F3EEFF;
+  --purple-border:#DDD6FE;
+
+  --amber:       #D97706;
+  --amber-bg:    #FFFBEB;
+  --amber-border:#FDE68A;
+
+  --danger:      #DC2626;
+  --shadow-sm:   0 1px 3px rgba(13,16,35,0.06), 0 1px 2px rgba(13,16,35,0.04);
+  --shadow-md:   0 4px 16px rgba(13,16,35,0.08), 0 1px 4px rgba(13,16,35,0.04);
+  --shadow-lg:   0 12px 40px rgba(13,16,35,0.12), 0 4px 12px rgba(13,16,35,0.06);
+  --radius-sm:   6px;
+  --radius:      10px;
+  --radius-lg:   16px;
+  --nav-h:       60px;
+}
+
+[data-theme="dark"]{
+  --bg:          #0D0F1A;
+  --surface:     #141828;
+  --surface-2:   #1A1F32;
+  --surface-3:   #212740;
+  --border:      #252A40;
+  --border-md:   #303554;
+
+  --ink-1:       #EEF0F8;
+  --ink-2:       #9BA3C0;
+  --ink-3:       #5A6080;
+  --ink-4:       #3C4260;
+
+  --accent:      #6878E8;
+  --accent-bg:   #1C1F3A;
+  --accent-dark: #8898FF;
+
+  --green:       #22C55E;
+  --green-bg:    #0D2218;
+  --green-border:#166534;
+
+  --blue:        #38BDF8;
+  --blue-bg:     #0A1F30;
+  --blue-border: #075985;
+
+  --purple:      #A78BFA;
+  --purple-bg:   #1E1030;
+  --purple-border:#4C1D95;
+
+  --amber:       #FBB04C;
+  --amber-bg:    #201508;
+  --amber-border:#92400E;
+
+  --shadow-sm:   0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md:   0 4px 16px rgba(0,0,0,0.4);
+  --shadow-lg:   0 12px 40px rgba(0,0,0,0.5);
+}
+
+/* ─── BASE ───────────────────────────────────────────── */
+body{
+  font-family:var(--ff-body);
+  background:var(--bg);
+  color:var(--ink-1);
+  min-height:100vh;
+  transition:background .25s, color .25s;
+}
+
+a{text-decoration:none;color:inherit;}
+
+/* ─── TOPNAV ─────────────────────────────────────────── */
+.topnav{
+  height:var(--nav-h);
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;
+  padding:0 1.75rem;
+  gap:1rem;
+  position:sticky;top:0;z-index:100;
+  box-shadow:var(--shadow-sm);
+}
+
+.nav-brand{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.brand-gem{
+  width:34px;height:34px;border-radius:9px;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--purple) 100%);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:16px;flex-shrink:0;
+  box-shadow:0 2px 8px rgba(79,99,210,0.35);
+}
+.brand-name{
+  font-family:var(--ff-display);
+  font-size:15px;font-weight:700;
+  color:var(--ink-1);
+  letter-spacing:-0.02em;
+  white-space:nowrap;
+}
+.brand-name span{color:var(--accent);}
+
+.nav-divider{width:1px;height:20px;background:var(--border);flex-shrink:0;margin:0 .25rem;}
+
+.nav-search{
+  flex:1;max-width:380px;position:relative;
+}
+.nav-search i{
+  position:absolute;left:11px;top:50%;transform:translateY(-50%);
+  color:var(--ink-4);font-size:15px;pointer-events:none;
+}
+.nav-search input{
+  width:100%;padding:8px 12px 8px 34px;
+  background:var(--surface-2);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  color:var(--ink-1);font-size:13px;font-family:var(--ff-body);
+  outline:none;transition:border-color .15s,box-shadow .15s;
+}
+.nav-search input::placeholder{color:var(--ink-4);}
+.nav-search input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,99,210,0.12);}
+
+.nav-actions{margin-left:auto;display:flex;align-items:center;gap:4px;}
+
+.icon-btn{
+  width:36px;height:36px;border-radius:var(--radius-sm);
+  border:none;background:transparent;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--ink-3);font-size:17px;
+  transition:background .12s,color .12s;position:relative;
+}
+.icon-btn:hover{background:var(--surface-2);color:var(--ink-1);}
+
+
+.user-pill{
+  display:flex;align-items:center;gap:8px;
+  padding:4px 10px 4px 4px;
+  background:var(--surface-2);border:1px solid var(--border);
+  border-radius:20px;cursor:pointer;
+  transition:background .12s;margin-left:4px;
+}
+.user-pill:hover{background:var(--surface-3);}
+.user-avatar{
+  width:28px;height:28px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--purple));
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:#fff;flex-shrink:0;
+}
+.user-label{font-size:12.5px;font-weight:600;color:var(--ink-1);}
+.user-pill i{font-size:13px;color:var(--ink-3);}
+
+/* ─── HERO STRIP ─────────────────────────────────────── */
+.hero{
+  background:linear-gradient(125deg, #1a2035 0%, #0f1628 45%, #1c2340 100%);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  padding:1.5rem 1.75rem 0;
+  position:relative;
+  overflow:hidden;
+}
+.hero::after{
+  content:'';
+  position:absolute;top:-80px;right:-80px;
+  width:320px;height:320px;
+  background:radial-gradient(circle, rgba(79,99,210,0.12) 0%, transparent 65%);
+  pointer-events:none;
+}
+
+.hero-top{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:1rem;flex-wrap:wrap;margin-bottom:1.25rem;
+  position:relative;z-index:1;
+}
+.hero-greeting{
+  font-family:var(--ff-display);
+  font-size:22px;font-weight:800;
+  color:#EEF1FF;letter-spacing:-0.03em;line-height:1.2;
+}
+.hero-greeting em{font-style:normal;color:#7B93FF;}
+.hero-sub{font-size:13px;color:rgba(180,188,220,0.75);margin-top:4px;font-weight:400;}
+
+.hero-meta{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.live-chip{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);
+  color:#4ade80;font-size:12px;font-weight:600;
+  padding:5px 12px;border-radius:20px;
+}
+.pulse{width:7px;height:7px;border-radius:50%;background:#22c55e;animation:pulse 2.2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(.85);}}
+.date-chip{
+  font-size:12px;color:rgba(180,188,220,0.65);
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.1);
+  padding:5px 12px;border-radius:20px;font-weight:500;
+}
+
+/* ─── QUICK LAUNCH ───────────────────────────────────── */
+.quick-launch{
+  display:flex;align-items:center;gap:6px;
+  padding-bottom:0;
+  overflow-x:auto;
+  scrollbar-width:none;
+  position:relative;z-index:1;
+}
+.quick-launch::-webkit-scrollbar{display:none;}
+
+.ql-label{
+  font-size:11px;font-weight:600;letter-spacing:.07em;
+  text-transform:uppercase;color:rgba(180,188,220,0.45);
+  white-space:nowrap;margin-right:4px;flex-shrink:0;
+}
+
+.ql-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 13px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:var(--radius-sm);
+  font-size:12.5px;font-weight:500;color:rgba(210,216,240,0.85);
+  cursor:pointer;white-space:nowrap;flex-shrink:0;
+  transition:all .15s;
+  position:relative;
+  text-decoration:none;
+}
+.ql-chip::after{
+  content:'';position:absolute;bottom:-1px;left:0;right:0;
+  height:2px;background:#7B93FF;
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .2s;border-radius:0;
+}
+.ql-chip:hover{background:rgba(79,99,210,0.2);border-color:rgba(123,147,255,0.4);color:#EEF1FF;}
+.ql-chip:hover::after{transform:scaleX(1);}
+.ql-chip i{font-size:14px;}
+
+/* ─── FILTER TABS ────────────────────────────────────── */
+.filter-tabs{
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  padding:0 1.75rem;
+  display:flex;align-items:center;gap:0;
+  overflow-x:auto;scrollbar-width:none;
+}
+.filter-tabs::-webkit-scrollbar{display:none;}
+
+.tab{
+  display:flex;align-items:center;gap:7px;
+  padding:13px 16px;
+  font-size:13px;font-weight:500;color:var(--ink-3);
+  border-bottom:2px solid transparent;
+  cursor:pointer;white-space:nowrap;
+  transition:color .15s,border-color .15s;
+  background:none;border-top:none;border-left:none;border-right:none;
+  font-family:var(--ff-body);
+}
+.tab:hover{color:var(--ink-1);}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab i{font-size:15px;}
+.tab-count{
+  font-size:11px;padding:1px 6px;border-radius:8px;
+  background:var(--surface-2);color:var(--ink-4);
+}
+.tab.active .tab-count{background:var(--accent-bg);color:var(--accent);}
+
+/* ─── MAIN ───────────────────────────────────────────── */
+.main{padding:1.75rem;max-width:1400px;}
+
+/* ─── SECTION ────────────────────────────────────────── */
+.section{margin-bottom:2.25rem;}
+.section.hidden{display:none;}
+
+.section-head{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:1rem;
+}
+.section-label-wrap{display:flex;align-items:center;gap:8px;}
+.section-accent{width:3px;height:16px;border-radius:2px;flex-shrink:0;}
+.acc-green{background:var(--green);}
+.acc-blue{background:var(--blue);}
+.acc-purple{background:var(--purple);}
+
+.section-name{
+  font-size:12px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink-3);
+}
+.section-pill{
+  font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600;
+}
+.sp-green{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+.sp-blue{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border);}
+.sp-purple{background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple-border);}
+
+/* ─── CARD GRID ──────────────────────────────────────── */
+.card-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(235px,1fr));
+  gap:10px;
+}
+
+/* ─── CARD ───────────────────────────────────────────── */
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:1.1rem 1.2rem 1rem;
+  display:flex;flex-direction:column;gap:9px;
+  text-decoration:none;color:inherit;
+  position:relative;overflow:hidden;
+  transition:border-color .15s,box-shadow .15s,transform .12s;
+  box-shadow:var(--shadow-sm);
+}
+.card::before{
+  content:'';
+  position:absolute;left:0;top:16px;bottom:16px;
+  width:3px;border-radius:0 2px 2px 0;
+  transition:opacity .15s;
+}
+.card.green::before{background:var(--green);}
+.card.blue::before{background:var(--blue);}
+.card.purple::before{background:var(--purple);}
+
+.card:hover{
+  border-color:var(--border-md);
+  box-shadow:var(--shadow-md);
+  transform:translateY(-2px);
+}
+.card.green:hover{border-color:var(--green-border);}
+.card.blue:hover{border-color:var(--blue-border);}
+.card.purple:hover{border-color:var(--purple-border);}
+
+.card.hidden{display:none;}
+
+.card-top{
+  display:flex;align-items:flex-start;
+  justify-content:space-between;gap:8px;
+}
+.card-icon{
+  width:38px;height:38px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+}
+.ci-green{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+.ci-blue{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border);}
+.ci-purple{background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple-border);}
+
+.card-badge{
+  font-size:10px;font-weight:600;letter-spacing:.04em;
+  padding:3px 8px;border-radius:20px;margin-top:3px;white-space:nowrap;
+}
+.cb-green{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+.cb-blue{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border);}
+.cb-purple{background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple-border);}
+
+.card-name{
+  font-size:14px;font-weight:700;color:var(--ink-1);
+  line-height:1.3;letter-spacing:-0.01em;
+  font-family:var(--ff-display);
+}
+.card-desc{
+  font-size:12px;color:var(--ink-3);line-height:1.5;flex:1;
+}
+.card-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:8px;border-top:1px solid var(--border);margin-top:auto;
+}
+.open-cta{
+  display:flex;align-items:center;gap:4px;
+  font-size:12.5px;font-weight:600;
+  transition:gap .15s;
+}
+.card.green .open-cta{color:var(--green);}
+.card.blue  .open-cta{color:var(--blue);}
+.card.purple .open-cta{color:var(--purple);}
+.card:hover .open-cta{gap:7px;}
+.open-cta i{font-size:13px;}
+.ext-icon{font-size:13px;color:var(--ink-4);}
+
+/* ─── EMPTY ──────────────────────────────────────────── */
+.empty-state{
+  display:none;padding:4rem 2rem;text-align:center;
+}
+.empty-state i{font-size:40px;color:var(--ink-4);display:block;margin-bottom:12px;}
+.empty-state h3{font-size:15px;font-weight:600;color:var(--ink-2);margin-bottom:6px;}
+.empty-state p{font-size:13px;color:var(--ink-4);}
+
+/* ─── SCROLLBAR ──────────────────────────────────────── */
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border-md);border-radius:3px;}
+
+/* ─── RESPONSIVE ─────────────────────────────────────── */
+@media(max-width:860px){
+  .topnav{padding:0 1rem;}
+  .nav-search{max-width:200px;}
+  .hero,.main,.filter-tabs{padding-left:1rem;padding-right:1rem;}
+  .hero-greeting{font-size:18px;}
+  .card-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:540px){
+  .nav-search{display:none;}
+  .brand-name{display:none;}
+  .card-grid{grid-template-columns:1fr;}
+  .hero-meta{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║  TOP NAVIGATION                      ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<nav class="topnav">
+  <div class="nav-brand">
+    <div class="brand-gem"><i class="ti ti-topology-star-3"></i></div>
+    <span class="brand-name">Cluster Paul <span>Command Center</span></span>
+  </div>
+
+  <div class="nav-divider"></div>
+
+  <div class="nav-search">
+    <i class="ti ti-search"></i>
+    <input type="text" id="mainSearch" placeholder="Search tools and resources…" oninput="filterCards()"/>
+  </div>
+
+  <div class="nav-actions">
+    <button class="icon-btn" id="themeBtn" title="Toggle dark mode" aria-label="Toggle dark mode" onclick="toggleTheme()">
+      <i class="ti ti-moon"></i>
+    </button>
+    <div class="user-pill">
+      <div class="user-avatar">PU</div>
+      <span class="user-label">Paul</span>
+      <i class="ti ti-chevron-down"></i>
+    </div>
+  </div>
+</nav>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║  HERO STRIP                          ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<div class="hero">
+  <div class="hero-top">
+    <div>
+      <div class="hero-greeting">Welcome back, <em>Paul</em> 👋</div>
+      <div class="hero-sub">Your team workspace is ready. 16 tools available across 3 categories.</div>
+    </div>
+    <div class="hero-meta">
+      <div class="live-chip"><span class="pulse"></span>All systems live</div>
+      <div class="date-chip" id="heroDate"></div>
+    </div>
+  </div>
+
+  <div class="quick-launch">
+    <span class="ql-label">Quick access</span>
+    <a href="https://lhc-agent-dashboard.vercel.app/" target="_blank" rel="noopener" class="ql-chip">
+      <i class="ti ti-device-desktop-analytics"></i> LHC Agent Dashboard
+    </a>
+    <a href="https://legacy-kpi.vercel.app/" target="_blank" rel="noopener" class="ql-chip">
+      <i class="ti ti-chart-line"></i> Legacy Healing KPI
+    </a>
+    <a href="https://banyankpi.vercel.app/" target="_blank" rel="noopener" class="ql-chip">
+      <i class="ti ti-chart-bar"></i> Banyan Treatment KPI
+    </a>
+    <a href="https://qascorecard.vercel.app/" target="_blank" rel="noopener" class="ql-chip">
+      <i class="ti ti-shield-check"></i> Quality Portal
+    </a>
+    <a href="https://lhc-kb-theta.vercel.app/" target="_blank" rel="noopener" class="ql-chip">
+      <i class="ti ti-book"></i> LHC Knowledge Base
+    </a>
+    <a href="https://agsschedulehub.vercel.app/" target="_blank" rel="noopener" class="ql-chip">
+      <i class="ti ti-calendar-event"></i> AST Schedule Hub
+    </a>
+  </div>
+
+  <!-- spacer below quick launch -->
+  <div style="height:1rem;"></div>
+</div>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║  FILTER TABS                         ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<div class="filter-tabs">
+  <button class="tab active" onclick="setFilter('all',this)">
+    <i class="ti ti-layout-grid"></i> All tools
+    <span class="tab-count" id="tc-all">16</span>
+  </button>
+  <button class="tab" onclick="setFilter('sheets',this)">
+    <i class="ti ti-table"></i> Google Sheets
+    <span class="tab-count" id="tc-sheets">8</span>
+  </button>
+  <button class="tab" onclick="setFilter('web',this)">
+    <i class="ti ti-browser"></i> Web Applications
+    <span class="tab-count" id="tc-web">6</span>
+  </button>
+  <button class="tab" onclick="setFilter('kpi',this)">
+    <i class="ti ti-chart-bar"></i> KPI Dashboards
+    <span class="tab-count" id="tc-kpi">2</span>
+  </button>
+</div>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║  MAIN CONTENT                        ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<div class="main">
+
+  <div id="emptyState" class="empty-state">
+    <i class="ti ti-search-off"></i>
+    <h3>No tools found</h3>
+    <p>Try a different search term.</p>
+  </div>
+
+  <!-- Google Sheets -->
+  <div class="section" id="sec-sheets">
+    <div class="section-head">
+      <div class="section-label-wrap">
+        <div class="section-accent acc-green"></div>
+        <span class="section-name">Google Sheets</span>
+      </div>
+      <span class="section-pill sp-green" id="sp-sheets">8 files</span>
+    </div>
+    <div class="card-grid" id="grid-sheets"></div>
+  </div>
+
+  <!-- Web Applications -->
+  <div class="section" id="sec-web">
+    <div class="section-head">
+      <div class="section-label-wrap">
+        <div class="section-accent acc-blue"></div>
+        <span class="section-name">Web Applications</span>
+      </div>
+      <span class="section-pill sp-blue" id="sp-web">6 apps</span>
+    </div>
+    <div class="card-grid" id="grid-web"></div>
+  </div>
+
+  <!-- KPI Dashboards -->
+  <div class="section" id="sec-kpi">
+    <div class="section-head">
+      <div class="section-label-wrap">
+        <div class="section-accent acc-purple"></div>
+        <span class="section-name">KPI Dashboards</span>
+      </div>
+      <span class="section-pill sp-purple" id="sp-kpi">2 dashboards</span>
+    </div>
+    <div class="card-grid" id="grid-kpi"></div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║  JAVASCRIPT                          ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<script>
+/* ── Date ─────────────────────────────── */
+document.getElementById('heroDate').textContent = new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+
+/* ── Tool data ───────────────────────── */
+const TOOLS = [
+  // ─ Sheets ─
+  {id:'s1',cat:'sheets',color:'green',icon:'ti-table',        name:'Legacy KPI',                    desc:'KPI tracking spreadsheet for Legacy Healing.',          url:'https://docs.google.com/spreadsheets/d/1vMJwoOoFC9jg0mOAOwT2i1iWSVNh16PsQ89U2Icr2AU/edit?usp=sharing'},
+  {id:'s2',cat:'sheets',color:'green',icon:'ti-table',        name:'Banyan KPI',                    desc:'KPI tracking spreadsheet for Banyan Treatment.',        url:'https://docs.google.com/spreadsheets/d/1Fhstp9OQUVwp1zUGuUjkPNIrXqNT9YNW-_ORk237HbM/edit?usp=sharing'},
+  {id:'s3',cat:'sheets',color:'green',icon:'ti-table',        name:'Takahami KPI',                  desc:'KPI tracking spreadsheet for Takahami.',                url:'https://docs.google.com/spreadsheets/d/1fue4rTLWIj-kKkSehEyeL7plCDWDw5HLYxuW2kX4ACU/edit?usp=sharing'},
+  {id:'s4',cat:'sheets',color:'green',icon:'ti-database',     name:'Quality Scorecard Database',    desc:'Raw database for all quality scorecard records.',       url:'https://docs.google.com/spreadsheets/d/1GdFTdlaSgrE2y0ZSCGb_3VgUUsEoQeYIeHUDqP75anc/edit?usp=sharing'},
+  {id:'s5',cat:'sheets',color:'green',icon:'ti-phone',        name:'Banyan Talktime Report',        desc:'Talk time and call duration report for Banyan.',        url:'https://docs.google.com/spreadsheets/d/1eNbfj5k0BLXa5fpU41wbuquWUYdLb-S7KFOjOLP3xZo/edit?usp=sharing'},
+  {id:'s6',cat:'sheets',color:'green',icon:'ti-layout-dashboard',name:'Legacy Healing Dashboard',  desc:'Master dashboard spreadsheet for Legacy Healing.',      url:'https://docs.google.com/spreadsheets/d/1xyJ0otJkqksJAazO3QJRVwCwvnplM0h5Ewn1kyUObkE/edit?usp=sharing'},
+  {id:'s7',cat:'sheets',color:'green',icon:'ti-clipboard-list',name:'LHC Call Disposition',        desc:'Call disposition tracker raw spreadsheet file.',        url:'https://docs.google.com/spreadsheets/d/1LBQlvV0B8R9oRzRAZ4bP_7gztTf4O4JM-BPZ4hOx7wg/edit?usp=sharing'},
+  {id:'s8',cat:'sheets',color:'green',icon:'ti-calendar',     name:'AST Schedule',                 desc:'Agent schedule and roster spreadsheet for AST.',       url:'https://docs.google.com/spreadsheets/d/1WfkWVlsM61D11BBwztpZuKlgVl_MK0OezLSYu8F_-zY/edit?usp=sharing'},
+  // ─ Web apps ─
+  {id:'w1',cat:'web',  color:'blue', icon:'ti-device-desktop-analytics',name:'LHC Agent Dashboard',desc:'Live agent performance dashboard for LHC agents.',     url:'https://lhc-agent-dashboard.vercel.app/'},
+  {id:'w2',cat:'web',  color:'blue', icon:'ti-book',          name:'LHC Knowledge Base',           desc:'Knowledge base and reference articles for LHC.',        url:'https://lhc-kb-theta.vercel.app/'},
+  {id:'w3',cat:'web',  color:'blue', icon:'ti-clipboard-check',name:'LHC Call Disposition Tracker',desc:'Track and log call dispositions for Legacy Healing.',   url:'https://lhc-tracker.vercel.app/'},
+  {id:'w4',cat:'web',  color:'blue', icon:'ti-calendar-event',name:'AST Schedule Hub',             desc:'Interactive schedule management hub for AST.',          url:'https://agsschedulehub.vercel.app/'},
+  {id:'w5',cat:'web',  color:'blue', icon:'ti-bolt',          name:'Takahami Cheat Sheet',         desc:'Quick-access cheat sheet for Takahami agents.',         url:'https://takahami-cheat-sheet.vercel.app/'},
+  {id:'w6',cat:'web',  color:'blue', icon:'ti-shield-check',  name:'Quality Management Portal',   desc:'QA scorecard submission and quality management.',       url:'https://qascorecard.vercel.app/'},
+  // ─ KPI ─
+  {id:'k1',cat:'kpi',  color:'purple',icon:'ti-chart-line',   name:'Legacy Healing KPI',           desc:'Live KPI dashboard for Legacy Healing operations.',     url:'https://legacy-kpi.vercel.app/'},
+  {id:'k2',cat:'kpi',  color:'purple',icon:'ti-chart-bar',    name:'Banyan Treatment KPI',         desc:'Live KPI dashboard for Banyan Treatment operations.',   url:'https://banyankpi.vercel.app/'},
+];
+
+const BADGE = {green:'Sheets',blue:'Web App',purple:'KPI'};
+
+/* ── Render cards ────────────────────── */
+function renderCards(){
+  const grids = {
+    sheets:document.getElementById('grid-sheets'),
+    web:document.getElementById('grid-web'),
+    kpi:document.getElementById('grid-kpi'),
+  };
+  TOOLS.forEach(t=>{
+    const c=t.color;
+    const a=document.createElement('a');
+    a.href=t.url; a.target='_blank'; a.rel='noopener noreferrer';
+    a.className=`card ${c}`;
+    a.dataset.cat=t.cat; a.dataset.name=t.name.toLowerCase(); a.dataset.id=t.id;
+    a.innerHTML=`
+      <div class="card-top">
+        <div class="card-icon ci-${c}"><i class="ti ${t.icon}"></i></div>
+        <span class="card-badge cb-${c}">${BADGE[c]}</span>
+      </div>
+      <div class="card-name">${t.name}</div>
+      <div class="card-desc">${t.desc}</div>
+      <div class="card-footer">
+        <span class="open-cta">Open <i class="ti ti-arrow-right"></i></span>
+        <i class="ti ti-external-link ext-icon"></i>
+      </div>`;
+    grids[t.cat].appendChild(a);
+  });
+}
+
+/* ── Filter logic ────────────────────── */
+let activeFilter='all';
+
+function setFilter(cat,el){
+  activeFilter=cat;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  filterCards();
+}
+
+function filterCards(){
+  const q=document.getElementById('mainSearch').value.toLowerCase().trim();
+  const counts={sheets:0,web:0,kpi:0};
+  let total=0;
+
+  document.querySelectorAll('.card').forEach(card=>{
+    const cat=card.dataset.cat;
+    const name=card.dataset.name;
+    const matchQ=!q||name.includes(q);
+    const matchF=activeFilter==='all'||activeFilter===cat;
+    if(matchQ&&matchF){card.classList.remove('hidden');counts[cat]++;total++;}
+    else{card.classList.add('hidden');}
+  });
+
+  const SEC={sheets:'sec-sheets',web:'sec-web',kpi:'sec-kpi'};
+  const SPC={sheets:'sp-sheets',web:'sp-web',kpi:'sp-kpi'};
+  const TAB={sheets:'tc-sheets',web:'tc-web',kpi:'tc-kpi'};
+  const LBL={sheets:'files',web:'apps',kpi:'dashboards'};
+  ['sheets','web','kpi'].forEach(cat=>{
+    document.getElementById(SEC[cat]).style.display=counts[cat]===0?'none':'';
+    document.getElementById(SPC[cat]).textContent=counts[cat]+' '+LBL[cat];
+    document.getElementById(TAB[cat]).textContent=counts[cat];
+  });
+  document.getElementById('tc-all').textContent=total;
+  document.getElementById('emptyState').style.display=total===0?'block':'none';
+
+  // hide quick-launch when searching
+  document.querySelector('.quick-launch').style.display=q?'none':'flex';
+}
+
+/* ── Dark mode ───────────────────────── */
+function toggleTheme(){
+  const html=document.documentElement;
+  const isDark=html.getAttribute('data-theme')==='dark';
+  html.setAttribute('data-theme',isDark?'light':'dark');
+  document.getElementById('themeBtn').innerHTML=isDark
+    ?'<i class="ti ti-moon"></i>'
+    :'<i class="ti ti-sun"></i>';
+}
+
+renderCards();
+</script>
+</body>
+</html>
